@@ -137,7 +137,13 @@ public struct Money: CustomStringConvertible, Mathematics {
 ////////////////////////////////////
 // Job
 //
-open class Job {
+open class Job: CustomStringConvertible {
+    internal var description: String {
+        get {
+            return "Job title: \(title) that is paid \(type)"
+        }
+    }
+
     fileprivate var title : String
     fileprivate var type : JobType
 
@@ -173,11 +179,14 @@ open class Job {
     }
 }
 
-
 ////////////////////////////////////
 // Person
 //
-open class Person {
+open class Person: CustomStringConvertible {
+    internal var description: String {
+        get { return "Person: \(firstName) \(lastName)" }
+    }
+
     open var firstName : String = ""
     open var lastName : String = ""
     open var age : Int = 0
@@ -221,7 +230,21 @@ open class Person {
 ////////////////////////////////////
 // Family
 //
-open class Family {
+open class Family: CustomStringConvertible {
+    internal var description: String {
+        get {
+            if self.members.count == 1 {
+                return "Family consist of only \(members[0].firstName) \(members[0].lastName)."
+            } else {
+                var result: String = "Family consists of \(members[0].firstName) \(members[0].lastName)"
+                for member in self.members {
+                    result += ", \(member.firstName) \(member.lastName)"
+                }
+                return result
+            }
+        }
+    }
+
     fileprivate var members : [Person] = []
   
     public init(spouse1: Person, spouse2: Person) {
@@ -250,4 +273,10 @@ open class Family {
         return result
     }
 }
+
+
+
+
+
+
 
