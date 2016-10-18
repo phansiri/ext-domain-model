@@ -122,28 +122,28 @@ class MoneyTests: XCTestCase {
         XCTAssert(difference.amount == 2)
     }
     
-    func testExtensionTwelveUSD() {
+    func testExtensionDoubleTwelveUSD() {
         let usd = 12.USD
         XCTAssert(usd.amount == 12)
         XCTAssert(usd.currency == "USD")
         XCTAssert(usd.description == "USD12.0")
     }
     
-    func testExtensionFiftyFiveEUR() {
+    func testExtensionDoubleFiftyFiveEUR() {
         let usd = 55.EUR
         XCTAssert(usd.amount == 55)
         XCTAssert(usd.currency == "EUR")
         XCTAssert(usd.description == "EUR55.0")
     }
     
-    func testExtensionTwentyThreeGBP() {
+    func testExtensionDoubleTwentyThreeGBP() {
         let usd = 23.GBP
         XCTAssert(usd.amount == 23)
         XCTAssert(usd.currency == "GBP")
         XCTAssert(usd.description == "GBP23.0")
     }
     
-    func testExtensionNintyThousandTwoHundredEightFourYEN() {
+    func testExtensionDoubleNintyThousandTwoHundredEightFourYEN() {
         let usd = 90284.YEN
         XCTAssert(usd.amount == 90284)
         XCTAssert(usd.currency == "YEN")
