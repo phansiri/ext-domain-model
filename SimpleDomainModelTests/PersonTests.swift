@@ -13,7 +13,6 @@ class PersonTests: XCTestCase {
   func testPerson() {
     let ted = Person(firstName: "Ted", lastName: "Neward", age: 45)
     XCTAssert(ted.toString() == "[Person: firstName:Ted lastName:Neward age:45 job:nil spouse:nil]")
-    XCTAssert(ted.description == "Person: Ted Neward")
   }
   
   func testAgeRestrictions() {
@@ -21,11 +20,9 @@ class PersonTests: XCTestCase {
     
     matt.job = Job(title: "Burger-Flipper", type: Job.JobType.Hourly(5.5))
     XCTAssert(matt.job == nil)
-    XCTAssert(matt.description == "Person: Matthew Neward")
 
     matt.spouse = Person(firstName: "Bambi", lastName: "Jones", age: 42)
     XCTAssert(matt.spouse == nil)
-    XCTAssert(matt.spouse?.description == nil)
     }
   
   func testAdultAgeRestrictions() {
@@ -33,11 +30,9 @@ class PersonTests: XCTestCase {
     
     mike.job = Job(title: "Burger-Flipper", type: Job.JobType.Hourly(5.5))
     XCTAssert(mike.job != nil)
-    XCTAssert(mike.description == "Person: Michael Neward")
     
     mike.spouse = Person(firstName: "Bambi", lastName: "Jones", age: 42)
     XCTAssert(mike.spouse != nil)
-    XCTAssert(mike.spouse?.description == "Person: Bambi Jones")
     }
   
 }
@@ -54,7 +49,6 @@ class FamilyTests : XCTestCase {
 
     let familyIncome = family.householdIncome()
     XCTAssert(familyIncome == 1000)
-    XCTAssert(family.description == "Family consists of Ted Neward, Ted Neward, Charlotte Neward")
   }
   
   func testFamilyWithKids() {
@@ -74,7 +68,6 @@ class FamilyTests : XCTestCase {
     
     let familyIncome = family.householdIncome()
     XCTAssert(familyIncome == 12000)
-    XCTAssert(family.description == "Family consists of Ted Neward, Ted Neward, Charlotte Neward, Mike Neward, Matt Neward")
   }
   
 }
