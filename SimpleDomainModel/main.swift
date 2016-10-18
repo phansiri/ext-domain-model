@@ -127,7 +127,7 @@ public struct Money: CustomStringConvertible, Mathematics {
     }
     
     public func subtract(_ from: Money) -> Money {
-        return Money(amount: self.convert(from.currency.rawValue).amount - from.amount, currency: from.currency)
+        return Money(amount: from.amount - self.convert(from.currency.rawValue).amount, currency: from.currency)
     }
 }
 

@@ -119,8 +119,8 @@ class MoneyTests: XCTestCase {
 
     }
     
-    func testSubtractTwelveUSDfromTenUSD() {
-        let difference = twelveUSD.subtract(tenUSD)
+    func testSubtractTenUSDfromTwelveUSD() {
+        let difference = tenUSD.subtract(twelveUSD)
         XCTAssert(difference.amount == 2)
     }
     
