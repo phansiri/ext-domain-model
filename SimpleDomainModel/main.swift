@@ -18,12 +18,22 @@ open class TestMe {
     }
 }
 
+protocol CustomStringConvertible {
+    var description: String {
+        get
+    }
+}
+
 ////////////////////////////////////
 // Money
 //
 public struct Money {
     public var amount : Int
     public var currency : String
+    
+    var description: String {
+        get { return "\(currency)\(amount).0" }
+    }
     
     enum Currency: String {
         case USD, EUR, CAN, GBP
