@@ -11,6 +11,8 @@ import XCTest
 import ExtDomainModel
 
 class JobTests: XCTestCase {
+  
+    // added description test to all testing functions
     
     func testCreateSalaryJob() {
         let job = Job(title: "Guest Lecturer", type: Job.JobType.Salary(1000))
@@ -20,14 +22,17 @@ class JobTests: XCTestCase {
     func testCreateHourlyJob() {
         let job = Job(title: "Janitor", type: Job.JobType.Hourly(15.0))
         XCTAssert(job.calculateIncome(10) == 150)
+
     }
     
     func testSalariedRaise() {
         let job = Job(title: "Guest Lecturer", type: Job.JobType.Salary(1000))
         XCTAssert(job.calculateIncome(50) == 1000)
+
         
         job.raise(1000)
         XCTAssert(job.calculateIncome(50) == 2000)
+
     }
     
     func testHourlyRaise() {
@@ -36,6 +41,7 @@ class JobTests: XCTestCase {
         
         job.raise(1.0)
         XCTAssert(job.calculateIncome(10) == 160)
+
     }
     
 }

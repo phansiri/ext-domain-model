@@ -23,7 +23,7 @@ class PersonTests: XCTestCase {
 
     matt.spouse = Person(firstName: "Bambi", lastName: "Jones", age: 42)
     XCTAssert(matt.spouse == nil)
-  }
+    }
   
   func testAdultAgeRestrictions() {
     let mike = Person(firstName: "Michael", lastName: "Neward", age: 22)
@@ -33,7 +33,7 @@ class PersonTests: XCTestCase {
     
     mike.spouse = Person(firstName: "Bambi", lastName: "Jones", age: 42)
     XCTAssert(mike.spouse != nil)
-  }
+    }
   
 }
 
