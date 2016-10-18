@@ -30,10 +30,10 @@ protocol Mathematics {
 }
 
 extension Double {
-    var USD: Money { return Money(amount: Int(self), currency: "USD") }
-    var EUR: Money { return Money(amount: Int(self), currency: "EUR") }
-    var GBP: Money { return Money(amount: Int(self), currency: "GBP") }
-    var YEN: Money { return Money(amount: Int(self), currency: "YEN") }
+    var USD: Money { return Money(amount: Int(self), currency: Money.Currency.USD) }
+    var EUR: Money { return Money(amount: Int(self), currency: Money.Currency.EUR) }
+    var GBP: Money { return Money(amount: Int(self), currency: Money.Currency.GBP) }
+    var YEN: Money { return Money(amount: Int(self), currency: Money.Currency.YEN) }
 }
 
 ////////////////////////////////////
@@ -41,25 +41,15 @@ extension Double {
 //
 public struct Money: CustomStringConvertible, Mathematics {
     public var amount : Int
-    public var currency : String
-    
+    public var currency : Currency
+    public enum Currency: String {
+        case USD = "USD", EUR = "EUR", CAN = "CAN", GBP = "GBP", YEN = "YEN"
+    }
     internal var description: String {
         get { return "\(currency)\(amount).0" }
     }
     
-    enum Currency: String {
-        case USD = "USD", EUR = "EUR", CAN = "CAN", GBP = "GBP"
-    }
-    
-    init(amount: Int, currency: String) {
-        self.currency = currency
-        self.amount = amount
-
-    }
-
-    
-    public func convert(_ to: String) -> Money {
-       let conversionRate = [
+    private let conversionRate = [
             "usdToGBP": 0.5,
             "usdToEUR": 1.5,
             "usdToCAN": 1.25,
@@ -72,65 +62,72 @@ public struct Money: CustomStringConvertible, Mathematics {
             "eurToGBP": 0.90,
             "eurToUSD": 0.6667,
             "eurToCAN": 1.48,
-            ]
+        ]
+
+    init(amount: Int, currency: Currency) {
+        self.currency = currency
+        self.amount = amount
+
+    }
+
+
         
-        
-        
+    public func convert(_ to: String) -> Money {
         switch self.currency {
-        case "GBP":
+        case .GBP:
             switch to {
             case "USD":
-                return Money(amount: Int(Double(self.amount) * conversionRate["gbpToUSD"]!), currency: "USD")
+                return Money(amount: Int(Double(self.amount) * conversionRate["gbpToUSD"]!), currency: .USD)
             case "EUR":
-                return Money(amount: Int(Double(self.amount) * conversionRate["gbpToEUR"]!), currency: "EUR")
+                return Money(amount: Int(Double(self.amount) * conversionRate["gbpToEUR"]!), currency: .EUR)
             case "CAN":
-                return Money(amount: Int(Double(self.amount) * conversionRate["gbpToCAN"]!), currency: "CAN")
+                return Money(amount: Int(Double(self.amount) * conversionRate["gbpToCAN"]!), currency: .CAN)
             default:
                 return Money(amount: self.amount, currency: self.currency)
             }
-        case "CAN":
+        case .CAN:
             switch to {
             case "USD":
-                return Money(amount: Int(Double(self.amount) * conversionRate["canToUSD"]!), currency: "USD")
+                return Money(amount: Int(Double(self.amount) * conversionRate["canToUSD"]!), currency: .USD)
             case "EUR":
-                return Money(amount: Int(Double(self.amount) * conversionRate["canToEUR"]!), currency: "EUR")
+                return Money(amount: Int(Double(self.amount) * conversionRate["canToEUR"]!), currency: .EUR)
             case "GBP":
-                return Money(amount: Int(Double(self.amount) * conversionRate["canToGBP"]!), currency: "GBP")
+                return Money(amount: Int(Double(self.amount) * conversionRate["canToGBP"]!), currency: .GBP)
             default:
                 return Money(amount: self.amount, currency: self.currency)
             }
-        case "EUR":
+        case .EUR:
             switch to {
             case "USD":
-                return Money(amount: Int(Double(self.amount) * conversionRate["eurToUSD"]!), currency: "USD")
+                return Money(amount: Int(Double(self.amount) * conversionRate["eurToUSD"]!), currency: .USD)
             case "EUR":
-                return Money(amount: Int(Double(self.amount) * conversionRate["eurToGBP"]!), currency: "GBP")
+                return Money(amount: Int(Double(self.amount) * conversionRate["eurToGBP"]!), currency: .GBP)
             case "CAN":
-                return Money(amount: Int(Double(self.amount) * conversionRate["eurToCAN"]!), currency: "CAN")
+                return Money(amount: Int(Double(self.amount) * conversionRate["eurToCAN"]!), currency: .CAN)
             default:
                 return Money(amount: self.amount, currency: self.currency)
             }
         default:
             switch to {
             case "GBP":
-                return Money(amount: Int(Double(self.amount) * conversionRate["usdToGBP"]!), currency: "GBP")
+                return Money(amount: Int(Double(self.amount) * conversionRate["usdToGBP"]!), currency: .GBP)
             case "EUR":
-                return Money(amount: Int(Double(self.amount) * conversionRate["usdToEUR"]!), currency: "EUR")
+                return Money(amount: Int(Double(self.amount) * conversionRate["usdToEUR"]!), currency: .EUR)
             case "CAN":
-                return Money(amount: Int(Double(self.amount) * conversionRate["usdToCAN"]!), currency: "CAN")
+                return Money(amount: Int(Double(self.amount) * conversionRate["usdToCAN"]!), currency: .CAN)
             default:
                 return Money(amount: self.amount, currency: self.currency)
             }
         }
     }
-
-
+    
+    
     public func add(_ to: Money) -> Money {
-        return Money(amount: to.amount + self.convert(to.currency).amount, currency: to.currency)
+        return Money(amount: to.amount + self.convert(to.currency.rawValue).amount, currency: to.currency)
     }
     
     public func subtract(_ from: Money) -> Money {
-        return Money(amount: self.convert(from.currency).amount - from.amount, currency: from.currency)
+        return Money(amount: self.convert(from.currency.rawValue).amount - from.amount, currency: from.currency)
     }
 }
 
