@@ -24,35 +24,32 @@ protocol CustomStringConvertible {
     }
 }
 
+protocol Mathematics {
+    func add(_ to: Money) -> Money
+    func subtract(_ to: Money) -> Money
+}
+
+extension Double {
+    var USD: Money { return Money(amount: Int(self), currency: "USD") }
+    var EUR: Money { return Money(amount: Int(self), currency: "EUR") }
+    var GBP: Money { return Money(amount: Int(self), currency: "GBP") }
+    var YEN: Money { return Money(amount: Int(self), currency: "YEN") }
+}
+
 ////////////////////////////////////
 // Money
 //
-public struct Money {
+public struct Money: CustomStringConvertible, Mathematics {
     public var amount : Int
     public var currency : String
     
-    var description: String {
+    internal var description: String {
         get { return "\(currency)\(amount).0" }
     }
     
     enum Currency: String {
-        case USD, EUR, CAN, GBP
+        case USD = "USD", EUR = "EUR", CAN = "CAN", GBP = "GBP"
     }
-    
-    private let conversionRate = [
-        "usdToGBP": 0.5,
-        "usdToEUR": 1.5,
-        "usdToCAN": 1.25,
-        "canToGBP": 0.61,
-        "canToEUR": 0.6667,
-        "canToUSD": 0.8,
-        "gbpToUSD": 2.0,
-        "gbpToEUR": 1.11,
-        "gbpToCAN": 1.64,
-        "eurToGBP": 0.90,
-        "eurToUSD": 0.6667,
-        "eurToCAN": 1.48,
-        ]
     
     init(amount: Int, currency: String) {
         self.currency = currency
@@ -62,11 +59,6 @@ public struct Money {
 
     
     public func convert(_ to: String) -> Money {
-        
-//        switch value {
-//        case .GBP:
-//            switch
-//        }
        let conversionRate = [
             "usdToGBP": 0.5,
             "usdToEUR": 1.5,
@@ -138,10 +130,9 @@ public struct Money {
     }
     
     public func subtract(_ from: Money) -> Money {
-        return Money(amount: from.amount + self.convert(from.currency).amount, currency: from.currency)
+        return Money(amount: self.convert(from.currency).amount - from.amount, currency: from.currency)
     }
 }
-
 
 ////////////////////////////////////
 // Job
@@ -181,6 +172,7 @@ open class Job {
         }
     }
 }
+
 
 ////////////////////////////////////
 // Person
@@ -244,7 +236,6 @@ open class Family {
     }
   
     open func haveChild(_ child: Person) -> Bool {
-//        child.age = 0
         members.append(child)
         return true
     }
